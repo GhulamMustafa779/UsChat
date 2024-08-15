@@ -1,0 +1,1 @@
+export const __DIRNAME = 'C:/Users/Ghulam Mustafa';
