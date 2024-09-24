@@ -39,15 +39,6 @@ const useSignin = () => {
           password: formData.password,
         };
 
-        // const resp = await fetch("http://localhost:3001/api/user/login", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify(user),
-        // });
-
-        // console.log("------------------",resp);
         const res = await axios.post(`${BASE_URL}/api/user/login`, user, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -60,6 +51,7 @@ const useSignin = () => {
           toast.error(res?.data?.message);
         }
       } catch (error) {
+        console.log(error)
         toast.error(error?.response?.data?.message);
       }
     }

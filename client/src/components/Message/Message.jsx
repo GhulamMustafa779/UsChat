@@ -1,25 +1,50 @@
-import React,{useEffect, useRef} from "react";
-import Space from '../Space/Space'
+import React, { useEffect, useRef, useState } from "react";
+import Space from "../Space/Space";
+import MessageDropdown from "../MessageDropdown/MessageDropdown";
+import { useSelector } from "react-redux";
 
-const Message = ({ direction = "ltr", message }) => {
+const Message = ({ message, index, textIndex, setTextIndex }) => {
   const scroll = useRef();
+  const { authUser } = useSelector((store) => store.user);
+  const isUser = message.senderId === authUser?._id;
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
 
-  useEffect(()=>{
-    scroll.current?.scrollIntoView({behavior:"smooth"})
-  },[message])
   return (
-    <div ref={scroll} className={`${direction == "ltr" ? "flex" : "flex justify-end"}`}>
+    <div className={` ${isUser ? "flex justify-end" : "flex justify-start"}`}>
       <div
         className={`${
-          direction == "ltr" ? "bg-white" : "bg-green-100 "
-        } border-none shadow-sm max-w-[600px] rounded-md my-4 p-2`}
+          isUser ? "flex flex-row-reverse ps-5 " : "flex pe-5 "
+        } items-center gap-5`}
+        onMouseOver={() => setTextIndex(index)}
+        onMouseOut={() => setTextIndex(null)}
       >
-        <p className="text-sm text-gray-700">
-          {message} <Space/><Space/><Space/><Space/><Space/>
-        </p>
-        <div className="relative w-full">
-          <p className="absolute -top-3 -right-1 text-[10px] h-[5px] text-gray-400 float-end mt-1">12:34</p>
+        <div
+          className={`${
+            isUser ? "bg-green-100" : "bg-white"
+          } border-none shadow-sm max-w-[600px] rounded-md my-4 p-2`}
+        >
+          <p className="text-sm text-gray-700">
+            {message.message} <Space />
+            <Space />
+            <Space />
+            <Space />
+            <Space />
+          </p>
+          <div className="relative w-full">
+            <p className="absolute -top-3 -right-1 text-[10px] h-[5px] text-gray-400 float-end mt-1">
+              12:34
+            </p>
+          </div>
         </div>
+        {isUser && index === textIndex && (
+          <MessageDropdown
+            senderId={message.senderId}
+            receiverId={message.receiverId}
+            id={message._id}
+          />
+        )}
       </div>
     </div>
   );

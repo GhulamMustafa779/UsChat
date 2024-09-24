@@ -9,16 +9,23 @@ const useRealtimeMessage = () => {
   const { chat } = useSelector((store) => store.chat);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("newMessage", (newMessage) => {
-        dispatch(setChat([...chat, newMessage]));
-      });
-    }
+    if (!socket) return;
+
+    const handleNewMessage = (newMessage) => {
+      dispatch(setChat([...chat, newMessage]));
+    };
+
+    const handleDeleteMessage = (messageId) => {
+      const updatedChat = chat.filter((text) => text._id !== messageId);
+      dispatch(setChat(updatedChat));
+    };
+
+    socket.on("newMessage", handleNewMessage);
+    socket.on("deleteMessage", handleDeleteMessage);
 
     return () => {
-      if (socket) {
-        socket.off("newMessage");
-      }
+      socket.off("newMessage", handleNewMessage);
+      socket.off("deleteMessage", handleDeleteMessage);
     };
   }, [socket, chat, dispatch]);
 };

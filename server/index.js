@@ -39,7 +39,8 @@ app.use(cookieParser());
 //app.use(morgan("combined"));
 
 const corsOption = {
-  origin: "https://192.168.228.220:5173",
+  //origin: "https://192.168.10.4:5173",
+  origin: "https://192.168.18.26:5173",
   // origin: 'http://localhost:5173',
   credentials: true,
 };
@@ -47,7 +48,9 @@ app.use(cors(corsOption));
 
 const io = new Server(httpsServer, {
   cors: {
-    origin: "https://192.168.228.220:5173",
+    // origin: "https://192.168.228.220:5173",
+    origin: "https://192.168.18.26:5173",
+    // origin: "https://192.168.10.4:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -57,6 +60,10 @@ let userSocketMap = {};
 
 export const receiverSocketId = (receiverId) =>{
   return userSocketMap[receiverId];
+}
+
+export const senderSocketId = (senderId) => {
+  return userSocketMap[senderId];
 }
 
 io.on("connection", (socket) => {

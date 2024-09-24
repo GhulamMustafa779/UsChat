@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Space = () => {
-  return (
-    <>
-        &nbsp;
-    </>
-  )
-}
+  return <>&nbsp;</>;
+};
 
-export default Space
+export default Space;

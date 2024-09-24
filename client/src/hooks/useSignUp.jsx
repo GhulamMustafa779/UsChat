@@ -51,7 +51,6 @@ const useSignin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setRequestSent(true);
-    console.log('here');
     if (validate()) {
       try {
         const user = {
@@ -77,8 +76,9 @@ const useSignin = () => {
           navigate('/signin')
         }
       } catch (error) {
-        toast.error(error.response.data.message);
-        console.log(error);
+        //console.log(error);
+        //toast.error(error.response.data.message);
+        console.log("error");
       }
 
     }

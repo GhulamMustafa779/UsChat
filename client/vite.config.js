@@ -12,7 +12,8 @@ export default defineConfig({
       key: fs.readFileSync(path.join(__DIRNAME, 'key.pem'), 'utf8'),
       cert: fs.readFileSync(path.join(__DIRNAME, 'cert.pem'), 'utf8')
     },
-    host: '192.168.228.220',
+    host: '192.168.18.26',
+    //host: '192.168.10.4',
     port: 5173,
     // port: 5173,
     // cors: true,

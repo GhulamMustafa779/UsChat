@@ -15,11 +15,11 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     let newSocket = io(BASE_URL, {
-        query: {
-          userId: authUser?._id,
-        },
-      }); // Replace with your server URL
-      setSocket(newSocket);
+      query: {
+        userId: authUser?._id,
+      },
+    }); // Replace with your server URL
+    setSocket(newSocket);
 
     newSocket.on("getOnlineUsers", (onlineUsers) => {
       dispatch(setOnlineUsers(onlineUsers));

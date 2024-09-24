@@ -12,9 +12,21 @@ const conversationModel = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Message"
         }
-    ]
+    ],
+    lastMessage:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Message"
+    }
 },{
     timestamps:true
+});
+
+
+conversationModel.pre('save', function (next) {
+    if (this.messages.length > 0) {
+        this.lastMessage = this.messages[this.messages.length - 1];
+    }
+    next();
 });
 
 

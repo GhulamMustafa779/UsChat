@@ -2,8 +2,6 @@ import React from "react";
 import Avatar from "../Avatar/Avatar";
 
 const ChatParticipant = ({ message = "", imgSrc, name, date, online }) => {
-
-
   return (
     <div className="w-full flex gap-3 p-2 rounded-md mt-4 shadow-sm">
       <Avatar src={imgSrc} size="" online={online} />

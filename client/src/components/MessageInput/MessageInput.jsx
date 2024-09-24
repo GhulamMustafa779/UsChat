@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import {setChat} from '../../redux/chatSlice' 
+import { setChat } from "../../redux/chatSlice";
 import { BASE_URL } from "../../utils/constants";
 
 const MessageInput = () => {
@@ -14,19 +14,19 @@ const MessageInput = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        axios.defaults.withCredentials = true;
-        const res = await axios.post(
-            `${BASE_URL}/api/message/send/${chatParticipant?._id}`,
-            { message },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-      if(res.data){
-        dispatch(setChat([...chat, res.data.newMessage]))
-        setMessage('')
+      axios.defaults.withCredentials = true;
+      const res = await axios.post(
+        `${BASE_URL}/api/message/send/${chatParticipant?._id}`,
+        { message },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.data) {
+        dispatch(setChat([...chat, res.data.newMessage]));
+        setMessage("");
       }
     } catch (error) {
       console.error(error);
