@@ -14,27 +14,48 @@ const useRealtimeMessage = () => {
     if (!socket) return;
 
     const handleNewMessage = (newMessage) => {
-      dispatch(setChat([...chat, newMessage]));
+      if (newMessage.senderId === chatParticipant?._id)
+        dispatch(setChat([...chat, newMessage]));
 
       const allParticipants = otherUsers.map((user) => {
-        if (user?.participants?.[0]?._id === chatParticipant?._id) {
+        if (user?.participants?.[0]?._id === newMessage.senderId) {
           return {
             ...user,
             lastMessage: {
               message: newMessage.message,
-              createdAt: newMessage.createdAt
+              createdAt: newMessage.createdAt,
             },
           };
         }
         return user;
       });
-      console.log(allParticipants)
       dispatch(setOtherUsers(allParticipants));
     };
 
-    const handleDeleteMessage = (messageId) => {
+    const handleDeleteMessage = ({ messageId, senderId }) => {
       const updatedChat = chat.filter((text) => text._id !== messageId);
       dispatch(setChat(updatedChat));
+      const lastText = updatedChat[updatedChat.length - 1];
+      const allParticipants = otherUsers.map((user) => {
+        if (user?.participants?.[0]?._id === senderId) {
+          const updatedUser = lastText ? {
+            ...user,
+            lastMessage: {
+              _id: lastText._id,
+              message: lastText.message,
+              createdAt: lastText.createdAt,
+            },
+          } : {
+            ...user,
+            lastMessage: null,
+          };
+          return updatedUser;
+        }
+        return user;
+      });
+      if (allParticipants) {
+        dispatch(setOtherUsers(allParticipants));
+      }
     };
 
     socket.on("newMessage", handleNewMessage);
@@ -44,7 +65,7 @@ const useRealtimeMessage = () => {
       socket.off("newMessage", handleNewMessage);
       socket.off("deleteMessage", handleDeleteMessage);
     };
-  }, [socket, chat, dispatch]);
+  }, [socket, chat, dispatch, otherUsers, chatParticipant]);
 };
 
 export default useRealtimeMessage;

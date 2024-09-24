@@ -1,12 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import Message from "../Message/Message";
 import { useSelector } from "react-redux";
-import useRealtimeMessage from "../../hooks/useRealtimeMessage";
 import useGetMessages from "../../hooks/useGetMessages";
 
 const Messages = () => {
   useGetMessages();
-  useRealtimeMessage();
   const { chat } = useSelector((store) => store.chat);
   const [textIndex, setTextIndex] = useState(null);
   const messagesEndRef = useRef(null);

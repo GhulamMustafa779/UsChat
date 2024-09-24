@@ -23,9 +23,7 @@ const conversationModel = new mongoose.Schema({
 
 
 conversationModel.pre('save', function (next) {
-    if (this.messages.length > 0) {
-        this.lastMessage = this.messages[this.messages.length - 1];
-    }
+    this.lastMessage = this.messages.length ? this.messages[this.messages.length - 1] : null;
     next();
 });
 

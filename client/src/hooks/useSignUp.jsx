@@ -76,9 +76,7 @@ const useSignin = () => {
           navigate('/signin')
         }
       } catch (error) {
-        //console.log(error);
-        //toast.error(error.response.data.message);
-        console.log("error");
+        toast.error(error.response.data.message);
       }
 
     }

@@ -3,8 +3,10 @@ import Avatar from "../Avatar/Avatar";
 import Messages from "../Messages/Messages";
 import { useSelector } from "react-redux";
 import MessageInput from "../MessageInput/MessageInput";
+import useRealtimeMessage from "../../hooks/useRealtimeMessage";
 
 const MessageContainer = () => {
+  useRealtimeMessage();
   const { chatParticipant } = useSelector((store) => store.chat);
   const { onlineUsers } = useSelector((store) => store.chat);
 

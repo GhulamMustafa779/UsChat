@@ -2,6 +2,7 @@ import React,{useMemo} from "react";
 import Avatar from "../Avatar/Avatar";
 
 function formatDate(createdAt) {
+ if(createdAt){
   const date = new Date(createdAt);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -16,11 +17,19 @@ function formatDate(createdAt) {
   } else {
     return date.toLocaleDateString();
   }
+ }
+ return "";
 }
 
 const ChatParticipant = ({ message, user, online }) => {
 
-  const formattedDate = useMemo(() => formatDate(message.createdAt), [message.createdAt]);
+  const formattedDate = useMemo(() => {
+    if(message?.createdAt)
+      return formatDate(message.createdAt);
+    else
+      return "";
+  }
+  , [message?.createdAt]);
 
   return (
     <div className="w-full flex gap-3 p-2 rounded-md mt-4 shadow-sm">

@@ -2,6 +2,7 @@ import React,{useEffect} from "react";
 import ChatSidebar from "../../components/ChatSidebar/ChatSidebar";
 import MessageContainer from "../../components/MessageContainer/MessageContainer";
 import useGetAllUsers from "../../hooks/useGetAllUsers";
+import useRealtimeMessage from "../../hooks/useRealtimeMessage";
 
 const Chat = () => {
   const {isSet} = useGetAllUsers();

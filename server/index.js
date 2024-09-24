@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import userRoute from "./routes/userRoute.js";
 import messageRoute from "./routes/messageRoute.js";
+import conversationRoute from './routes/conversationRoute.js'
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { Server } from "socket.io";
@@ -92,6 +93,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
+app.use("/api/conversation", conversationRoute);
 
 httpsServer.listen(port, () => {
   connectDB();

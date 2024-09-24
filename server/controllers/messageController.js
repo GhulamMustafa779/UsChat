@@ -75,25 +75,27 @@ export const deleteMessage = async (req, res) => {
     if (!message) {
       return res.status(404).json({ message: "Invalid message ID." });
     }
-
+    const senderId = message.senderId;
     await message.deleteOne();
 
-    const updatedConversation = await Conversation.findOneAndUpdate(
-      { messages: messageId },
-      { $pull: { messages: messageId } },
-      { new: true }
-    );
+    const conversation = await Conversation.findOne({ messages: messageId });
 
-    if (updatedConversation) {
-      const socketId = receiverSocketId(receiverId);
+    if (conversation) {
+      conversation.messages.pull(messageId);
+    
+      const updatedConversation = await conversation.save();
 
-      if (socketId) {
-        console.log("delete request sent to ----------------- ", socketId);
-        io.to(socketId).emit("deleteMessage", messageId);
+      if (updatedConversation) {
+        const socketId = receiverSocketId(receiverId);
+
+        if (socketId) {
+          console.log("delete request sent to ----------------- ", socketId);
+          io.to(socketId).emit("deleteMessage", {messageId, senderId});
+        }
+        return res.status(200).json({ message: "Message deleted successfully!" });
       }
-      return res.status(200).json({ message: "Message deleted successfully!" });
     }
-
+    
     return res
       .status(400)
       .json({ message: "Message was not found in any conversation." });
