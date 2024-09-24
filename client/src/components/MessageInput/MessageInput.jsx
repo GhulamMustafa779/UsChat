@@ -4,12 +4,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setChat } from "../../redux/chatSlice";
 import { BASE_URL } from "../../utils/constants";
+import { setOtherUsers } from "../../redux/userSlice";
 
 const MessageInput = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
-  const { chatParticipant } = useSelector((store) => store.chat);
-  const { chat } = useSelector((store) => store.chat);
+  const { otherUsers } = useSelector((store) => store.user);
+  const { chat, chatParticipant } = useSelector((store) => store.chat);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +27,19 @@ const MessageInput = () => {
       );
       if (res.data) {
         dispatch(setChat([...chat, res.data.newMessage]));
+        const allParticipants = otherUsers.map((user) => {
+          if (user?.participants?.[0]?._id === chatParticipant?._id) {
+            return {
+              ...user,
+              lastMessage: {
+                message,
+                createdAt: new Date().toISOString()
+              },
+            };
+          }
+          return user;
+        });
+        dispatch(setOtherUsers(allParticipants));
         setMessage("");
       }
     } catch (error) {

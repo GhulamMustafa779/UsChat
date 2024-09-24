@@ -10,17 +10,17 @@ export default {
   plugins: [function ({addUtilities}){
     const newUtilities = {
       ".new-scrollbar::-webkit-scrollbar": {
-        width: "3px", // Make the scrollbar thinner
+        width: "3px",
       },
       ".new-scrollbar::-webkit-scrollbar-track": {
-        backgroundColor: "transparent", // No color for the track
+        backgroundColor: "transparent", 
       },
       ".new-scrollbar::-webkit-scrollbar-thumb": {
-        background: "#128C7E", // Thumb color
+        background: "transparent",
       },
       ".new-scrollbar": {
         "scrollbar-width": "thin",
-        "scrollbar-color": "#128C7E transparent",
+        "scrollbar-color": "#E5E4E2 transparent",
       },
     };
     addUtilities(newUtilities)

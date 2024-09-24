@@ -1,4 +1,5 @@
 import { User } from "../models/userModel.js";
+import { Conversation } from "../models/conversationModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -110,10 +111,21 @@ export const logout = (req, res) => {
 export const getOtherUsers = async (req, res) => {
   try {
     const loggedInUserId = req.id;
-    const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select(
-      "-password"
-    );
-    return res.status(200).json(otherUsers);
+    const conversations = await Conversation.find({
+      participants: loggedInUserId
+    })
+      .select('participants lastMessage')
+      .populate({
+        path: 'participants', 
+        match: { _id: {$ne:loggedInUserId} },
+        select: 'fullName profilePhoto'
+      })
+      .populate({
+        path: 'lastMessage',
+        select: 'message createdAt'
+      });
+
+    return res.status(200).json(conversations);
   } catch (error) {
     console.log(error);
   }

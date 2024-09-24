@@ -27,16 +27,15 @@ const Message = ({ message, index, textIndex, setTextIndex }) => {
         >
           <p className="text-sm text-gray-700">
             {message.message} <Space />
-            <Space />
-            <Space />
-            <Space />
-            <Space />
+            <span className="inline-block text-[10px] h-[5px] text-gray-400 float-end mt-1 text-nowrap">
+              {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
           </p>
-          <div className="relative w-full">
-            <p className="absolute -top-3 -right-1 text-[10px] h-[5px] text-gray-400 float-end mt-1">
-              12:34
+          {/* <div className="relative w-full">
+            <p className="absolute -top-2 -right-1 text-[10px] h-[5px] text-gray-400 float-end mt-1 text-nowrap">
+              {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
-          </div>
+          </div> */}
         </div>
         {isUser && index === textIndex && (
           <MessageDropdown

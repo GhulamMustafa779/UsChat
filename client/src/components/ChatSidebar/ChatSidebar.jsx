@@ -7,7 +7,6 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers } from "../../redux/userSlice";
 import toast from "react-hot-toast";
-import useGetAllUsers from "../../hooks/useGetAllUsers";
 import { setChat, setChatParticipant } from "../../redux/chatSlice";
 import { BASE_URL } from "../../utils/constants";
 

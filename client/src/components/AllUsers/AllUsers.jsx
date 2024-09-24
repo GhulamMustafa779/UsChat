@@ -13,7 +13,7 @@ const AllUsers = ({ search }) => {
 
   useEffect(() => {
     const searchedUsers = otherUsers?.filter((user) =>
-      user.fullName.toLowerCase().includes(search.toLowerCase())
+      user.participants[0].fullName.toLowerCase().includes(search.toLowerCase())
     );
     setUsers(searchedUsers);
   }, [search]);
@@ -27,8 +27,8 @@ const AllUsers = ({ search }) => {
   const handleSelectedUser = (id) => {
     if (id != chatParticipant?._id) {
       dispatch(setChat(null));
-      const participant = otherUsers.filter((user) => user._id === id);
-      dispatch(setChatParticipant(participant[0]));
+      const participant = otherUsers.filter((user) => user.participants[0]._id=== id);
+      dispatch(setChatParticipant(participant[0].participants[0]));
     }
   };
 
@@ -41,16 +41,14 @@ const AllUsers = ({ search }) => {
           <div
             key={index}
             className={`${
-              chatParticipant?._id === user._id ? "bg-gray-100" : "bg-white"
+              chatParticipant?._id === user.participants[0]._id ? "bg-gray-100" : "bg-white"
             } hover:bg-gray-50`}
-            onClick={() => handleSelectedUser(user._id)}
+            onClick={() => handleSelectedUser(user.participants[0]._id)}
           >
             <ChatParticipant
-              message={"Kuch bh "}
-              imgSrc={user.profilePhoto}
-              name={user.fullName}
-              date={"2/3/2024"}
-              online={onlineUsers.includes(user._id)}
+              message={user.lastMessage}
+              user={user.participants[0]}
+              online={onlineUsers.includes(user.participants[0]._id)}
             />
           </div>
         );
