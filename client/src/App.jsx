@@ -24,10 +24,8 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <SocketProvider>
         <RouterProvider router={router} />
         <Toaster position="top-left" reverseOrder={false} />
-      </SocketProvider>
     </div>
   );
 }

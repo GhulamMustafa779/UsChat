@@ -1,35 +1,38 @@
-import React,{useMemo} from "react";
+import React, { useMemo } from "react";
 import Avatar from "../Avatar/Avatar";
+import MessageStatus from "../MessageStatus/MessageStatus";
+import { useSelector } from "react-redux";
 
 function formatDate(createdAt) {
- if(createdAt){
-  const date = new Date(createdAt);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  if (createdAt) {
+    const date = new Date(createdAt);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  if (date >= today) {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  } else if (date >= yesterday) {
-    return "Yesterday";
-  } else {
-    return date.toLocaleDateString();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    if (date >= today) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else if (date >= yesterday) {
+      return "Yesterday";
+    } else {
+      return date.toLocaleDateString();
+    }
   }
- }
- return "";
+  return "";
 }
 
 const ChatParticipant = ({ message, user, online }) => {
+  const { authUser } = useSelector((state) => state.user);
 
   const formattedDate = useMemo(() => {
-    if(message?.createdAt)
-      return formatDate(message.createdAt);
-    else
-      return "";
-  }
-  , [message?.createdAt]);
+    if (message?.createdAt) return formatDate(message.createdAt);
+    else return "";
+  }, [message?.createdAt]);
 
   return (
     <div className="w-full flex gap-3 p-2 rounded-md mt-4 shadow-sm">
@@ -42,11 +45,18 @@ const ChatParticipant = ({ message, user, online }) => {
           >
             {user.fullName}
           </h3>
-          <p className="text-gray-500 text-[10px] font-regular">{formattedDate}</p>
+          <p className="text-gray-500 text-[10px] font-regular">
+            {formattedDate}
+          </p>
         </div>
-        <p className="font-regular text-sm pt-1 text-gray-500 text-nowrap text-ellipsis overflow-hidden whitespace-nowrap">
-          {message ? message.message : ""}
-        </p>
+        <div className="w-full flex items-center gap-2  pt-1">
+          {message && message.senderId === authUser?._id && (
+            <MessageStatus status={message.status} />
+          )}
+          <p className="font-regular text-sm text-gray-500 text-nowrap text-ellipsis overflow-hidden whitespace-nowrap">
+            {message ? message.message : ""}
+          </p>
+        </div>
       </div>
     </div>
   );

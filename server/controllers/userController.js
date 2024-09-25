@@ -122,7 +122,7 @@ export const getOtherUsers = async (req, res) => {
       })
       .populate({
         path: 'lastMessage',
-        select: 'message createdAt'
+        select: 'message createdAt status senderId'
       });
 
     return res.status(200).json(conversations);

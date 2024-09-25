@@ -9,7 +9,7 @@ import { setOtherUsers } from "../../redux/userSlice";
 const MessageInput = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
-  const { otherUsers } = useSelector((store) => store.user);
+  const { otherUsers, authUser } = useSelector((store) => store.user);
   const { chat, chatParticipant } = useSelector((store) => store.chat);
 
   const handleSubmit = async (e) => {
@@ -33,7 +33,9 @@ const MessageInput = () => {
               ...user,
               lastMessage: {
                 message,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                status:'sent',
+                senderId: authUser?._id
               },
             };
           }

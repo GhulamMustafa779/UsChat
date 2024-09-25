@@ -1,7 +1,7 @@
 import { Conversation } from "../models/conversationModel.js";
 import { Message } from "../models/messageModel.js";
-import { receiverSocketId } from "./../index.js";
-import { io } from "./../index.js";
+import { getSocketId } from "../socket/socket.js";
+import  { io }  from "../index.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -31,7 +31,7 @@ export const sendMessage = async (req, res) => {
 
     await conversation.save();
 
-    const socketId = receiverSocketId(receiverId);
+    const socketId = getSocketId(receiverId);
 
     if (socketId) {
       console.log(newMessage.message, " sent to ----------------- ", socketId);

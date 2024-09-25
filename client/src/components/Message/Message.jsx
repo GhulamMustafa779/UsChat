@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Space from "../Space/Space";
 import MessageDropdown from "../MessageDropdown/MessageDropdown";
 import { useSelector } from "react-redux";
+import MessageStatus from "../MessageStatus/MessageStatus";
 
 const Message = ({ message, index, textIndex, setTextIndex }) => {
   const scroll = useRef();
@@ -29,6 +30,8 @@ const Message = ({ message, index, textIndex, setTextIndex }) => {
             {message.message} <Space />
             <span className="inline-block text-[10px] h-[5px] text-gray-400 float-end mt-1 text-nowrap">
               {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              { isUser &&
+                <MessageStatus status={message.status} />}
             </span>
           </p>
           {/* <div className="relative w-full">

@@ -12,11 +12,9 @@ import messageRoute from "./routes/messageRoute.js";
 import conversationRoute from './routes/conversationRoute.js'
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import { Server } from "socket.io";
 import { __DIRNAME } from "./utils/constants.js";
+import setupSocketIO from "./socket/socket.js";
 
-//import {createServer} from 'http'
-//import {Server} from 'socket.io'
 
 dotenv.config({});
 const port = process.env.PORT || 5000;
@@ -47,44 +45,7 @@ const corsOption = {
 };
 app.use(cors(corsOption));
 
-const io = new Server(httpsServer, {
-  cors: {
-    // origin: "https://192.168.228.220:5173",
-    origin: "https://192.168.18.26:5173",
-    // origin: "https://192.168.10.4:5173",
-    methods: ["GET", "POST"],
-  },
-});
-
-
-let userSocketMap = {};
-
-export const receiverSocketId = (receiverId) =>{
-  return userSocketMap[receiverId];
-}
-
-export const senderSocketId = (senderId) => {
-  return userSocketMap[senderId];
-}
-
-io.on("connection", (socket) => {
-  console.log("user connected : ", socket.id);
-
-  const userId = socket.handshake.query.userId;
-  if (userId != undefined) {
-    userSocketMap[userId] = socket.id;
-  }
-
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected ", socket.id);
-    delete userSocketMap[userId];
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
-  });
-});
-
-export {io};
+export const io  = setupSocketIO(httpsServer);
 
 // All routes using middleware of express
 app.get("/", (req, res) => {
